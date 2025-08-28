@@ -27,4 +27,4 @@ I am most excited to continue developing the website and learning more about the
 
 Support and Resources: 
 
-The most beneficial learning so far has been the hands-on practice of going along with the lecture. The additional support I might need in the future is office hours, however, I am confident that hands-on learning is the best for me moving forward in this class. 
+The most beneficial learning so far has been the hands-on practice of going along with the lecture, and feedback on assignments works best for me. The additional support I might need in the future is office hours, however, I am confident that hands-on learning is the best for me moving forward in this class. 
