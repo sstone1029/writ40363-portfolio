@@ -3,37 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Samantha Stone - Introduction</title>
-</head>
-<body> 
-    
-    <header><nav>  <a href="index.html">Home</a> | <a href="about.html">About</a> </nav></header>
+    <title>Document</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+
+</head> 
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">Samantha Stone</a>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+           
+
+    <header>
+
+        <div class="header_text">
+
+            <h1>Samantha Stone</h1>
+            <p>Criminal Justice and Data Analytics Student</p>
+            <p>I value my time management and organizational skills, as well as, being data driven. </p>
+        </div>
+        <div class="header_pic">
+            <img src="../images/Samanthastoneheadshot.jpg" alt="Samantha Stone Professional Headshot" />
+            <!-- This will become your portfolio image -->
+        </div>
+
+
+    </header>
+
     <main>
-    <section>
-        <h1>Brief Introduction</h1>
-
-        <p>Hello, my name is <em>Samantha Stone.</em> I am a junior from Denver, Colorado. I am majoring in criminal justice and minoring in DCDA.  </p>
-
-        <figure align="center"> <!-- pre-CSS workaround for centering -->
-
-            <img src="images/Recruitment.jpeg" alt="Sorority recruitment from the summer" width="100%">
-
-            <figcaption> This is a picture of me at a soroity recruitment event this past summer.</figcaption>
-
-        </figure>
-        <p>This is a link to <a href="https://www.tcu.edu" target="_blank">my college</a></p>
+        
+    <section class="'about-section" id="about">
+        <div class="about-image">
+            <img src="../images/Recruitment.jpeg" alt="Another image"/>
+        </div>
+        <div class="about-text">
+            <h2>About Me</h2>
+            <p>I have always lived in Colorado. I love to ski, hike, and try new places in Colorado. I am the only person from my high school to attend TCU in my graduating class, which included 755 students. I played lacrosse and field hockey growing up, and I play on the TCU women's club lacrosse team.My passions are working out every day/ staying active, playing lacrosse, and studying criminal justice.  My interests include watching true crime documentaries, spending time with friends, baking/cooking, and being with family. </p>
+            <p> My short-term goals are finishing college with a 3.5 or higher cumulative GPA, studying abroad next semester, and getting an internship next summer with an agency that focuses on data analytics. My long-term goals are to work for a federal agency as an intelligence or crime analyst, moving around the country and seeing the world, and mentoring younger students to help choose their career paths. </p>
+            <p>My current studies at TCU include criminal justice courses, and I am focusing on my minor in data analytics. I am also participating in an independent study with a criminal justice professor on a research project about the deaths of inmates in jails across the United States.</p>
+        </div>
+     </section>
+    
+     <!-- ADD MY OWN SKILLS!!!! -->
+     <section class="skills-section" id="skills">
+        <h2>Skills</h2>
+        <div class="skills-container">
+            <div class="skill-card">
+                <h3>Data Analytics</h3>
+                <p>Excel, Stata, SPSS, SQL, Python</p>
+            </div>
+            <div class="skill-card">
+                <h3>Organization</h3>
+                <p>Time management, Detail Oriented, and Communication</p>
+            </div>
+            <div class="skill-card">
+                <h3>Collaboration</h3>
+                <p>Problem-solving, Accountability, and Respectfullness </p>
+            </div>
+            <div class="skill-card">
+                <h3>Leadership</h3>
+                <p>Strategic thinking, Motivation, and Integrity</p>
+            </div>
+        
+        </div>
     </section>
-    <section> 
+<!-- Add my own -->
+<section class="projects-section" id="projects">
+    <h2>My Projects</h2>
+    <div class="projects-container">
+        <article class="project-card">
+            <div class="project-content">
+                <h3>Class Website Project</h3>
+                <p>A simple website I built using HTML and CSS for this class.</p>
+                <p><strong>Skills used:</strong> HTML and CSS</p>
+            </div>
+        </article>
+        
+        <article class="project-card">
+            <div class="project-content">
+                <h3>Data Collection Project</h3>
+                <p>Managed and collected data about fatal encounters in the U.S. and ran statistical analysis on the variables</p>
+                <p><strong>Skills used:</strong> Excel, Stata, SPSS</p>
+            </div>
+        </article>
+        
+        <article class="project-card">
+            <div class="project-content">
+                <h3>Future Project</h3>
+                <p>Be able to use arcGIS for future projects with data sets and mapping tools</p>
+                <p><strong>Skills to learn:</strong> arcGIS</p>
+            </div>
+        </article>
+    </div>
+</section>
 
-    <h2>Experience</h2>
-    <p>I received an award in <strong>field research in criminal justice</strong> last semester, which involved data collection, management, and statistical analysis of the given variables. This past summer I interned at a police department, helping in investigations, as well as working closely with the crime analyst there.  </p>
-    </section>
-    <section>
-    <h3>Contact</h3>
-
-    <p>My email is samantha.stone@tcu.edu to contact me!</p>
-    </section>
-    </main> 
-    <footer></footer>
+            
+     
+</section>
+    
+</main>    
 </body>
 </html>
