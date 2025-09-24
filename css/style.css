@@ -34,7 +34,7 @@ body {
     color:#333;
 }
 h1 {
-    color: #2d3748;
+    color: #000205;
     font-size: 2.5rem;
     font-weight: 700;
     margin-bottom: 1rem;
@@ -43,7 +43,7 @@ h1 {
 h2 {
     font-size: 2rem;
     font-weight: 600;
-    color: #4a5568;
+    color: #2e343d;
     margin-bottom: 0.8rem;
     line-height: 1.4;
 }
@@ -57,7 +57,7 @@ h3 {
 p {
   font-size: 1rem;
   margin-bottom: 1rem;
-  color: #555;
+  color: #101010;
 }
 p+p {
     margin-top: 1rem;
@@ -144,10 +144,10 @@ nav a:focus {
    5. HERO / HEADER BLOCK
    ========================= */
 .header_text {
-    background-color: steelblue;
+    color: white;
+    background-color: #96bae0;
     flex: 1;
     padding: 2rem;
-    color: white;
 }
 .header_pic {
     flex: 1; 
@@ -259,6 +259,7 @@ nav a:focus {
 .project-card p {
   margin-bottom: 0.5rem;
 }
+
 
 /* =========================
    8. SECTION STYLES
