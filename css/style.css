@@ -201,6 +201,7 @@ nav a:focus {
     max-width: 250px;
     height: auto;
     border-radius: 8px;
+}
 /* Responsive image adjustments for mobile devices */
 @media (max-width: 480px) {
     .header_pic img {
@@ -250,7 +251,6 @@ nav a:focus {
 }
 
 
-}
 .about-text {
     flex: 2;
     min-width: 250px;
@@ -341,9 +341,9 @@ section h2::after {
    10. MEDIA QUERIES
    ========================= */
 @media (min-width: 480px) {
-    .skills-container {
-        grid-template-columns: repeat(auto);
-    }
+  .skills-container {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
 }
 @media (min-width: 768px) {
     main {
