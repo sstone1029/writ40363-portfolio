@@ -37,8 +37,21 @@
               <h2>Daily Inspiration</h2>
                 <div id="quotes-display">
                 <!-- Quote will appear here -->
-              </div> 
-              <button id="new-quote-btn" class="btn-primary">New Quote</button>
+              </div>
+              <div class="quote-actions">
+                <button id="new-quote-btn" class="btn-primary">New Quote</button>
+                <button id="favorite-btn" class="btn-favorite" title="Add to favorites">
+                  <span class="heart-icon">🤍</span> Favorite
+                </button>
+              </div>
+            </section>
+
+            <!-- Favorites Widget -->
+            <section class="widget favorites-widget">
+              <h2>My Favorite Quotes ❤️</h2>
+              <div id="favorites-display">
+                <!-- Favorite quotes will appear here -->
+              </div>
             </section>
 
             <!-- Tasks Widget -->
@@ -68,6 +81,9 @@
             </section>
         </main>
     </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toast-container"></div>
 
     <script src="js/app.js"></script>
 </body>

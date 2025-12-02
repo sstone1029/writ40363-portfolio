@@ -2,7 +2,31 @@
 // PROJECT 3: PERSONAL DATA DASHBOARD
 // LAB16: fetch() and JSON Basics
 // ==========================================
+
+// ==========================================
+// TOAST NOTIFICATION SYSTEM
+// ==========================================
+
+function showToast(message, type = 'success') {
+  const container = document.getElementById('toast-container');
+  if (!container) return;
+  
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+  toast.innerHTML = `<span>${message}</span>`;
+  container.appendChild(toast);
+  
+  // Auto remove after 3 seconds
+  setTimeout(() => {
+    toast.remove();
+  }, 3000);
+  
+  console.log('Toast shown:', message);
+}
+
+// ==========================================
 // Theme Management
+// ==========================================
 function initializeTheme() {
   // Check for saved theme preference
   const savedTheme = localStorage.getItem('dashboardTheme');
@@ -23,6 +47,9 @@ function toggleTheme() {
 
   // Update icon
   updateThemeIcon(isDark ? 'dark' : 'light');
+  
+  // Show toast notification
+  showToast(`${isDark ? '🌙 Dark' : '☀️ Light'} mode activated`, 'info');
 
   console.log('Theme switched to:', isDark ? 'dark' : 'light');
 }
@@ -118,6 +145,7 @@ loadWeather();
 // Global variable to store all quotes
 let allQuotes = [];
 let currentQuoteIndex = -1; // Track current quote to avoid repeats
+let currentQuote = null; // Track the currently displayed quote
 
 // Function to load quotes from JSON
 function loadQuotes() {
@@ -147,6 +175,26 @@ function displayRandomQuote() {
     return;
   }
 
+  // Get the quotes display element
+  const quotesDisplay = document.getElementById('quotes-display');
+  const existingQuote = quotesDisplay.querySelector('.quote-card');
+  
+  // If there's an existing quote, fade it out first
+  if (existingQuote) {
+    existingQuote.classList.add('fade-out');
+    
+    // Wait for fade out animation, then update
+    setTimeout(() => {
+      updateQuoteContent();
+    }, 300);
+  } else {
+    // No existing quote, just display
+    updateQuoteContent();
+  }
+}
+
+// Helper function to update quote content
+function updateQuoteContent() {
   // Get random index (different from current)
   let randomIndex;
   do {
@@ -155,6 +203,7 @@ function displayRandomQuote() {
 
   currentQuoteIndex = randomIndex;
   const quote = allQuotes[randomIndex];
+  currentQuote = quote; // Store current quote
 
   // Display the quote
   const quotesDisplay = document.getElementById('quotes-display');
@@ -164,6 +213,13 @@ function displayRandomQuote() {
       <div class="quote-author">— ${quote.author}</div>
     </div>
   `;
+  
+  // Add double-click to copy functionality
+  const quoteCard = quotesDisplay.querySelector('.quote-card');
+  quoteCard.addEventListener('dblclick', copyQuoteToClipboard);
+
+  // Update favorite button state
+  updateFavoriteButton();
 
   console.log('Displayed quote:', quote);
 }
@@ -190,8 +246,171 @@ function setupQuotesButton() {
   });
 }
 
+
 // Call setupQuotesButton after DOM is loaded
 setupQuotesButton();
+
+// Function to copy quote to clipboard
+function copyQuoteToClipboard() {
+  if (!currentQuote) return;
+  
+  const quoteText = `"${currentQuote.text}" — ${currentQuote.author}`;
+  
+  navigator.clipboard.writeText(quoteText)
+    .then(() => {
+      showToast('📋 Quote copied to clipboard!', 'success');
+      console.log('Quote copied:', quoteText);
+    })
+    .catch(err => {
+      console.error('Failed to copy:', err);
+      showToast('❌ Failed to copy quote', 'error');
+    });
+}
+
+// ========================================
+// FAVORITE QUOTES FEATURE
+// ========================================
+
+// Function to load favorite quotes from localStorage
+function loadFavorites() {
+  const favoritesJSON = localStorage.getItem('favoriteQuotes');
+  
+  if (favoritesJSON) {
+    return JSON.parse(favoritesJSON);
+  } else {
+    return []; // Return empty array if no favorites yet
+  }
+}
+
+// Function to save favorites to localStorage
+function saveFavorites(favorites) {
+  localStorage.setItem('favoriteQuotes', JSON.stringify(favorites));
+  console.log('Favorites saved:', favorites);
+}
+
+// Function to check if a quote is already favorited
+function isQuoteFavorited(quote) {
+  const favorites = loadFavorites();
+  return favorites.some(fav => 
+    fav.text === quote.text && fav.author === quote.author
+  );
+}
+
+// Function to toggle favorite status of current quote
+function toggleFavorite() {
+  if (!currentQuote) {
+    console.log('No quote to favorite');
+    return;
+  }
+
+  const favorites = loadFavorites();
+  const isFavorited = isQuoteFavorited(currentQuote);
+
+  if (isFavorited) {
+    // Remove from favorites
+    const updatedFavorites = favorites.filter(fav => 
+      !(fav.text === currentQuote.text && fav.author === currentQuote.author)
+    );
+    saveFavorites(updatedFavorites);
+    showToast('💔 Removed from favorites', 'info');
+    console.log('Quote removed from favorites');
+  } else {
+    // Add to favorites
+    favorites.push(currentQuote);
+    saveFavorites(favorites);
+    showToast('❤️ Added to favorites!', 'success');
+    console.log('Quote added to favorites');
+  }
+
+  // Update UI
+  updateFavoriteButton();
+  displayFavorites();
+}
+
+// Function to update favorite button appearance
+function updateFavoriteButton() {
+  const favoriteBtn = document.getElementById('favorite-btn');
+  const heartIcon = favoriteBtn.querySelector('.heart-icon');
+  
+  if (!currentQuote) return;
+
+  if (isQuoteFavorited(currentQuote)) {
+    heartIcon.textContent = '❤️';
+    favoriteBtn.classList.add('favorited');
+    favoriteBtn.title = 'Remove from favorites';
+  } else {
+    heartIcon.textContent = '🤍';
+    favoriteBtn.classList.remove('favorited');
+    favoriteBtn.title = 'Add to favorites';
+  }
+}
+
+// Function to display all favorite quotes
+function displayFavorites() {
+  const favorites = loadFavorites();
+  const favoritesDisplay = document.getElementById('favorites-display');
+
+  // If no favorites, show message
+  if (favorites.length === 0) {
+    favoritesDisplay.innerHTML = `
+      <div class="no-favorites">
+        <div class="empty-icon">💭</div>
+        <p>No favorite quotes yet!</p>
+        <p class="empty-hint">Click the favorite button on quotes you love.</p>
+      </div>
+    `;
+    return;
+  }
+
+  // Display all favorite quotes
+  favoritesDisplay.innerHTML = favorites.map((quote, index) => `
+    <div class="favorite-item">
+      <div class="favorite-quote">
+        <div class="favorite-text">"${quote.text}"</div>
+        <div class="favorite-author">— ${quote.author}</div>
+      </div>
+      <button class="btn-unfavorite" onclick="removeFavorite(${index})" title="Remove from favorites">
+        ❌
+      </button>
+    </div>
+  `).join('');
+
+  console.log(`Displayed ${favorites.length} favorite quotes`);
+}
+
+// Function to remove a specific favorite by index
+function removeFavorite(index) {
+  const favorites = loadFavorites();
+  const removedQuote = favorites[index];
+  
+  favorites.splice(index, 1);
+  saveFavorites(favorites);
+  displayFavorites();
+  
+  // Update favorite button if the removed quote is currently displayed
+  if (currentQuote && 
+      currentQuote.text === removedQuote.text && 
+      currentQuote.author === removedQuote.author) {
+    updateFavoriteButton();
+  }
+  
+  console.log('Favorite removed:', removedQuote);
+}
+
+// Set up favorite button click handler
+function setupFavoriteButton() {
+  const favoriteBtn = document.getElementById('favorite-btn');
+  
+  favoriteBtn.addEventListener('click', () => {
+    console.log('Favorite button clicked!');
+    toggleFavorite();
+  });
+}
+
+// Initialize favorites when page loads
+setupFavoriteButton();
+displayFavorites();
+
 // ========================================
 // TASKS WIDGET (from LAB18)
 // ========================================
@@ -276,6 +495,8 @@ function addTask(taskText) {
   tasks.push(newTask);
   saveTasks(tasks);
   displayTasks();
+  
+  showToast('✅ Task added successfully!', 'success');
 
   console.log('Task added:', newTask);
 }
@@ -300,8 +521,24 @@ function setupTaskForm() {
 // Function to toggle task complete/incomplete
 function toggleTask(index) {
   const tasks = loadTasks();
+  const taskItem = document.querySelectorAll('.task-item')[index];
+  
   tasks[index].completed = !tasks[index].completed;
   saveTasks(tasks);
+  
+  // Add celebration animation if task was completed
+  if (tasks[index].completed) {
+    taskItem.classList.add('celebrating');
+    showToast('🎉 Task completed!', 'success');
+    
+    // Remove animation class after animation completes
+    setTimeout(() => {
+      taskItem.classList.remove('celebrating');
+    }, 600);
+  } else {
+    showToast('📝 Task marked incomplete', 'info');
+  }
+  
   displayTasks();
 
   console.log('Task toggled:', tasks[index]);
@@ -313,9 +550,18 @@ function deleteTask(index) {
 
   // Optional: Confirm before deleting
   if (confirm(`Delete task: "${taskToDelete.text}"?`)) {
-    tasks.splice(index, 1);
-    saveTasks(tasks);
-    displayTasks();
+    const taskItem = document.querySelectorAll('.task-item')[index];
+    
+    // Add removing animation
+    taskItem.classList.add('removing');
+    
+    // Wait for animation then remove
+    setTimeout(() => {
+      tasks.splice(index, 1);
+      saveTasks(tasks);
+      displayTasks();
+      showToast('🗑️ Task deleted', 'info');
+    }, 300);
 
     console.log('Task deleted');
   }

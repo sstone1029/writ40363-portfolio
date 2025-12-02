@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Abroad Hub</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Study Abroad Hub</h1>
+        <p>Traveling around the world with you</p>
+    </header>
+
+    <nav>
+        <button class="tab-btn active" data-tab="weather">Weather</button>
+        <button class="tab-btn" data-tab="timezone">Time Zones</button>
+        <button class="tab-btn" data-tab="stay">Where to Stay</button>
+        <button class="tab-btn" data-tab="currency">Currency Converter</button>
+        <button class="tab-btn" data-tab="discounts">Food & Activities</button>
+    </nav>
+
+    <main>
+        <section id="weather" class="tab-content active">
+            <h2>Weather Comparison</h2>
+            <p class="section-desc">Check current weather by including the city and country of your destination</p>
+            <div class="city-input">
+                <input type="text" id="city-search" placeholder="Enter city name...">
+                <button id="add-city-btn">Add City</button>
+            </div>
+            <div id="weather-cards" class="card-container"></div>
+        </section>
+
+        <section id="timezone" class="tab-content">
+            <h2>Time Zone Converter</h2>
+            <p class="section-desc">Compare times across different cities</p>
+            <div id="timezone-display"></div>
+        </section>
+
+        <section id="stay" class="tab-content">
+            <h2>Where to Stay</h2>
+            <p class="section-desc">Find student-friendly accommodation in popular study abroad cities</p>
+            <div class="city-select-container">
+                <label for="accommodation-city">Select a city:</label>
+                <select id="accommodation-city">
+                    <option value="">Choose a city...</option>
+                    <option value="london">London, UK</option>
+                    <option value="paris">Paris, France</option>
+                    <option value="tokyo">Tokyo, Japan</option>
+                    <option value="barcelona">Barcelona, Spain</option>
+                    <option value="sydney">Sydney, Australia</option>
+                    <option value="berlin">Berlin, Germany</option>
+                    <option value="dublin">Dublin, Ireland</option>
+                    <option value="rome">Rome, Italy</option>
+                </select>
+            </div>
+            <div id="stay-info"></div>
+        </section>
+
+        <section id="currency" class="tab-content">
+            <h2>Currency Converter</h2>
+            <div class="currency-converter">
+                <div class="converter-input">
+                    <input type="number" id="amount" placeholder="Amount" value="100">
+                    <select id="from-currency">
+                        <option value="USD">USD - US Dollar</option>
+                    </select>
+                </div>
+                <button class="converter-arrow" id="swap-currencies" title="Swap currencies">⇄</button>
+                <div class="converter-input">
+                    <input type="number" id="converted-amount" placeholder="Converted" readonly>
+                    <select id="to-currency">
+                        <option value="EUR">EUR - Euro</option>
+                    </select>
+                </div>
+                <button id="convert-btn">Convert</button>
+            </div>
+            <div id="conversion-result"></div>
+        </section>
+
+        <section id="discounts" class="tab-content">
+            <h2>Food & Activities</h2>
+            <p class="section-desc">Discover the best food and activities in your study abroad city</p>
+            <div class="city-select-container">
+                <label for="food-city">Select a city:</label>
+                <select id="food-city">
+                    <option value="">Choose a city...</option>
+                    <option value="london">London, UK</option>
+                    <option value="paris">Paris, France</option>
+                    <option value="tokyo">Tokyo, Japan</option>
+                    <option value="barcelona">Barcelona, Spain</option>
+                    <option value="sydney">Sydney, Australia</option>
+                    <option value="berlin">Berlin, Germany</option>
+                    <option value="dublin">Dublin, Ireland</option>
+                    <option value="rome">Rome, Italy</option>
+                </select>
+            </div>
+            <div id="discount-list"></div>
+        </section>
+    </main>
+    <script src="js/data.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
