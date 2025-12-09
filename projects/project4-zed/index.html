@@ -3,46 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Study Abroad Hub</title>
+    <meta name="description" content="Study Abroad Hub - Your comprehensive guide to weather, time zones, accommodation, and student discounts for studying abroad">
+    <title>Study Abroad Hub - Travel Resources for International Students</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <header>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <header role="banner">
         <h1>Study Abroad Hub</h1>
         <p>Traveling around the world with you</p>
     </header>
 
-    <nav>
-        <button class="tab-btn active" data-tab="weather">Weather</button>
-        <button class="tab-btn" data-tab="timezone">Time Zones</button>
-        <button class="tab-btn" data-tab="stay">Where to Stay</button>
-        <button class="tab-btn" data-tab="currency">Currency Converter</button>
-        <button class="tab-btn" data-tab="discounts">Food & Activities</button>
+    <nav role="navigation" aria-label="Main navigation">
+        <button class="tab-btn active" data-tab="weather" aria-selected="true" role="tab" aria-controls="weather">Weather</button>
+        <button class="tab-btn" data-tab="timezone" aria-selected="false" role="tab" aria-controls="timezone">Time Zones</button>
+        <button class="tab-btn" data-tab="stay" aria-selected="false" role="tab" aria-controls="stay">Where to Stay</button>
+        <button class="tab-btn" data-tab="currency" aria-selected="false" role="tab" aria-controls="currency">Currency Converter</button>
+        <button class="tab-btn" data-tab="discounts" aria-selected="false" role="tab" aria-controls="discounts">Food & Activities</button>
     </nav>
 
-    <main>
-        <section id="weather" class="tab-content active">
+    <main id="main-content" role="main">
+        <section id="weather" class="tab-content active" role="tabpanel" aria-labelledby="weather-tab" tabindex="0">
             <h2>Weather Comparison</h2>
             <p class="section-desc">Check current weather by including the city and country of your destination</p>
             <div class="city-input">
-                <input type="text" id="city-search" placeholder="Enter city name...">
-                <button id="add-city-btn">Add City</button>
+                <label for="city-search" class="visually-hidden">City name</label>
+                <input type="text" id="city-search" placeholder="Enter city name..." aria-label="Enter city name to check weather">
+                <button id="add-city-btn" aria-label="Add city to weather comparison">Add City</button>
             </div>
-            <div id="weather-cards" class="card-container"></div>
+            <div id="weather-cards" class="card-container" role="region" aria-live="polite" aria-label="Weather comparison cards"></div>
         </section>
 
-        <section id="timezone" class="tab-content">
+        <section id="timezone" class="tab-content" role="tabpanel" aria-labelledby="timezone-tab" tabindex="0">
             <h2>Time Zone Converter</h2>
             <p class="section-desc">Compare times across different cities</p>
-            <div id="timezone-display"></div>
+            <div id="timezone-display" role="region" aria-live="polite" aria-label="Time zone comparison display"></div>
         </section>
 
-        <section id="stay" class="tab-content">
+        <section id="stay" class="tab-content" role="tabpanel" aria-labelledby="stay-tab" tabindex="0">
             <h2>Where to Stay</h2>
             <p class="section-desc">Find student-friendly accommodation in popular study abroad cities</p>
             <div class="city-select-container">
                 <label for="accommodation-city">Select a city:</label>
-                <select id="accommodation-city">
+                <select id="accommodation-city" aria-label="Select a city to view accommodation options">
                     <option value="">Choose a city...</option>
                     <option value="london">London, UK</option>
                     <option value="paris">Paris, France</option>
@@ -54,36 +57,40 @@
                     <option value="rome">Rome, Italy</option>
                 </select>
             </div>
-            <div id="stay-info"></div>
+            <div id="stay-info" role="region" aria-live="polite" aria-label="Accommodation information"></div>
         </section>
 
-        <section id="currency" class="tab-content">
+        <section id="currency" class="tab-content" role="tabpanel" aria-labelledby="currency-tab" tabindex="0">
             <h2>Currency Converter</h2>
             <div class="currency-converter">
                 <div class="converter-input">
-                    <input type="number" id="amount" placeholder="Amount" value="100">
-                    <select id="from-currency">
+                    <label for="amount" class="visually-hidden">Amount to convert</label>
+                    <input type="number" id="amount" placeholder="Amount" value="100" aria-label="Amount to convert" min="0" step="0.01">
+                    <label for="from-currency" class="visually-hidden">From currency</label>
+                    <select id="from-currency" aria-label="Select source currency">
                         <option value="USD">USD - US Dollar</option>
                     </select>
                 </div>
-                <button class="converter-arrow" id="swap-currencies" title="Swap currencies">⇄</button>
+                <button class="converter-arrow" id="swap-currencies" aria-label="Swap currencies" title="Swap currencies">⇄</button>
                 <div class="converter-input">
-                    <input type="number" id="converted-amount" placeholder="Converted" readonly>
-                    <select id="to-currency">
+                    <label for="converted-amount" class="visually-hidden">Converted amount</label>
+                    <input type="number" id="converted-amount" placeholder="Converted" readonly aria-label="Converted amount result" aria-readonly="true">
+                    <label for="to-currency" class="visually-hidden">To currency</label>
+                    <select id="to-currency" aria-label="Select target currency">
                         <option value="EUR">EUR - Euro</option>
                     </select>
                 </div>
-                <button id="convert-btn">Convert</button>
+                <button id="convert-btn" aria-label="Convert currency">Convert</button>
             </div>
-            <div id="conversion-result"></div>
+            <div id="conversion-result" role="status" aria-live="polite" aria-atomic="true"></div>
         </section>
 
-        <section id="discounts" class="tab-content">
+        <section id="discounts" class="tab-content" role="tabpanel" aria-labelledby="discounts-tab" tabindex="0">
             <h2>Food & Activities</h2>
             <p class="section-desc">Discover the best food and activities in your study abroad city</p>
             <div class="city-select-container">
                 <label for="food-city">Select a city:</label>
-                <select id="food-city">
+                <select id="food-city" aria-label="Select a city to view food and activities">
                     <option value="">Choose a city...</option>
                     <option value="london">London, UK</option>
                     <option value="paris">Paris, France</option>
@@ -95,7 +102,7 @@
                     <option value="rome">Rome, Italy</option>
                 </select>
             </div>
-            <div id="discount-list"></div>
+            <div id="discount-list" role="region" aria-live="polite" aria-label="Food and activities information"></div>
         </section>
     </main>
     <script src="js/data.js"></script>

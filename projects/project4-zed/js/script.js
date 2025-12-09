@@ -6,14 +6,56 @@ tabButtons.forEach(button => {
     button.addEventListener('click', () => {
         const tabName = button.dataset.tab;
         
-        // Remove active class from all
-        tabButtons.forEach(btn => btn.classList.remove('active'));
+        // Remove active class and update ARIA attributes for all
+        tabButtons.forEach(btn => {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-selected', 'false');
+            btn.setAttribute('tabindex', '-1');
+        });
         tabContents.forEach(content => content.classList.remove('active'));
         
-        // Add active class to clicked
+        // Add active class and update ARIA attributes for clicked
         button.classList.add('active');
+        button.setAttribute('aria-selected', 'true');
+        button.removeAttribute('tabindex');
         document.getElementById(tabName).classList.add('active');
+        
+        // Focus the activated tab panel for screen readers
+        document.getElementById(tabName).focus();
     });
+    
+    // Add keyboard navigation for tabs
+    button.addEventListener('keydown', (e) => {
+        const currentIndex = Array.from(tabButtons).indexOf(button);
+        let nextIndex;
+        
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+            e.preventDefault();
+            nextIndex = (currentIndex + 1) % tabButtons.length;
+            tabButtons[nextIndex].click();
+            tabButtons[nextIndex].focus();
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            nextIndex = (currentIndex - 1 + tabButtons.length) % tabButtons.length;
+            tabButtons[nextIndex].click();
+            tabButtons[nextIndex].focus();
+        } else if (e.key === 'Home') {
+            e.preventDefault();
+            tabButtons[0].click();
+            tabButtons[0].focus();
+        } else if (e.key === 'End') {
+            e.preventDefault();
+            tabButtons[tabButtons.length - 1].click();
+            tabButtons[tabButtons.length - 1].focus();
+        }
+    });
+});
+
+// Initialize inactive tabs as not focusable
+tabButtons.forEach((btn, index) => {
+    if (index !== 0) {
+        btn.setAttribute('tabindex', '-1');
+    }
 });
 
 // Weather API Configuration
@@ -36,19 +78,35 @@ async function addCity() {
     const cityName = cityInput.value.trim();
     
     if (!cityName) {
+        announceToScreenReader('Please enter a city name');
         alert('Please enter a city name');
         return;
     }
     
     // Check if city already added
     if (savedCities.some(city => city.toLowerCase() === cityName.toLowerCase())) {
+        announceToScreenReader('City already added');
         alert('City already added!');
         cityInput.value = '';
         return;
     }
     
+    announceToScreenReader('Fetching weather data...');
     await fetchWeather(cityName);
     cityInput.value = '';
+}
+
+// Helper function to announce messages to screen readers
+function announceToScreenReader(message) {
+    const announcement = document.createElement('div');
+    announcement.setAttribute('role', 'status');
+    announcement.setAttribute('aria-live', 'polite');
+    announcement.className = 'visually-hidden';
+    announcement.textContent = message;
+    document.body.appendChild(announcement);
+    
+    // Remove after announcement
+    setTimeout(() => announcement.remove(), 1000);
 }
 
 // Fetch Weather Data
@@ -70,6 +128,7 @@ async function fetchWeather(city) {
         
         // Display weather card
         displayWeatherCard(data);
+        announceToScreenReader(`Weather data for ${data.name} added successfully`);
         
     } catch (error) {
         alert(`Error: ${error.message}. Please check the city name and try again.`);
@@ -81,6 +140,8 @@ function displayWeatherCard(data) {
     const card = document.createElement('div');
     card.className = 'weather-card';
     card.dataset.city = data.name;
+    card.setAttribute('role', 'article');
+    card.setAttribute('aria-label', `Weather information for ${data.name}, ${data.sys.country}`);
     
     const temp = Math.round(data.main.temp);
     const feelsLike = Math.round(data.main.feels_like);
@@ -90,9 +151,9 @@ function displayWeatherCard(data) {
     const windSpeed = Math.round(data.wind.speed); // Wind speed in mph
     
     card.innerHTML = `
-        <button class="remove-btn" onclick="removeCity('${data.name}')">×</button>
+        <button class="remove-btn" onclick="removeCity('${data.name}')" aria-label="Remove ${data.name} from comparison">×</button>
         <div class="city-name">${data.name}, ${data.sys.country}</div>
-        <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${description}">
+        <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${description} weather icon">
         <div class="temp">${temp}°F</div>
         <div class="description">${description}</div>
         <div class="weather-details">
@@ -123,6 +184,8 @@ function removeCity(cityName) {
     // Remove from localStorage
     savedCities = savedCities.filter(city => city !== cityName);
     localStorage.setItem('cities', JSON.stringify(savedCities));
+    
+    announceToScreenReader(`${cityName} removed from comparison`);
 }
 
 // Load Saved Cities on Page Load
@@ -143,10 +206,12 @@ function displayTimeZones() {
     timezones.forEach(({ city, timezone }) => {
         const timeCard = document.createElement('div');
         timeCard.className = 'timezone-card';
+        timeCard.setAttribute('role', 'article');
+        timeCard.setAttribute('aria-label', `Time in ${city}`);
         timeCard.innerHTML = `
             <div class="timezone-city">${city}</div>
-            <div class="timezone-time" data-timezone="${timezone}">--:--:--</div>
-            <div class="timezone-date"></div>
+            <div class="timezone-time" data-timezone="${timezone}" aria-label="Current time">--:--:--</div>
+            <div class="timezone-date" aria-label="Current date"></div>
         `;
         grid.appendChild(timeCard);
     });
@@ -252,6 +317,8 @@ async function convertCurrency() {
         const convertedAmount = (amount * rate).toFixed(2);
         
         document.getElementById('converted-amount').value = convertedAmount;
+        
+        announceToScreenReader(`${amount} ${fromCurrency} equals ${convertedAmount} ${toCurrency}`);
         
         resultDiv.innerHTML = `
             <p><strong>${amount} ${fromCurrency}</strong> = <strong>${convertedAmount} ${toCurrency}</strong></p>
